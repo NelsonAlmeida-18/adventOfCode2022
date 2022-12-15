@@ -5,7 +5,7 @@ class day13:
     def problema1(self):
         pairs = self.pairMaker()
         for pair in pairs:
-            print(pairs[pair][0], pairs[pair][1])
+            self.pairInner(pairs[pair])
 
     def pairMaker(self):
         file = open("./day13/day13Input.txt", "r")
@@ -17,28 +17,27 @@ class day13:
             if line == "\n":
                 pairPos += 1
             else:
-                pairs[pairPos].append(self.pairInner(line))
+                pairs[pairPos].append(re.sub("\n", "", line))
         return pairs
 
-    def pairInner(self, line):
-        line = re.sub("\n", "", line)
-        pair = []
-        openBrackets = re.search(r"\[(.*)\]$", line)
-        if openBrackets:
-            line = openBrackets.group(1)
-            test = re.split(r"(.*\])\,", line)
-            for i in test:
-                openBrackets = re.search(r"\[(.+)\]$", i)
-                if openBrackets:
-                    pair.append(self.pairInner(i))
-                else:
-                    items = i.split(",")
-                    for item in items:
-                        if item != "" and item != "[]":
-                            pair.append(int(item))
-                        if item == "[]":
-                            pair.append([])
-        return pair
+    def pairInner(self, pair):
+        pair1 = pair[0]
+        pair2 = pair[1]
+        self.pairParser(pair1)
+
+    def pairParser(self, pair):
+        pairParsed = []
+        pair = re.search(r"\[(.*)\]$", pair).group(1)
+        if "[" in pair:
+            pairSplitted = []
+            buffer = ""
+            numOfAbreParen = 0
+
+            print(pairSplitted)
+        else:
+            pair = pair.split(",")
+            for i in pair:
+                pairParsed.append(i)
 
 
 day13().problema1()
